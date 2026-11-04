@@ -1,0 +1,30 @@
+# ── Credenciales: nunca se versionan ────────────────────────────────────────
+.env
+.env.*
+!.env.example
+config.local.php
+
+# ── Cédulas subidas por los médicos (datos personales) ──────────────────────
+# Se ignora el CONTENIDO, nunca los archivos que protegen la carpeta: si
+# /uploads/ se ignorara entero, el .htaccess que cierra el acceso web no viajaría
+# al servidor y las cédulas quedarían públicas.
+/uploads/cedulas/*
+!/uploads/cedulas/index.php
+
+# ── Logs ──────────────────────────────────────────────────────────────────────
+*.log
+
+# ── Volcados de base de datos (el esquema y el seed ficticio sí se versionan) ─
+*.sql.gz
+*.dump
+dump*.sql
+*.sqlite
+*.sqlite-*
+
+# ── Editores y sistema operativo ────────────────────────────────────────────
+.vscode/
+.idea/
+*.swp
+.DS_Store
+Thumbs.db
+desktop.ini

@@ -1,0 +1,10 @@
+# Permite que el header Authorization llegue a PHP (Apache/LiteSpeed).
+RewriteEngine On
+RewriteCond %{HTTP:Authorization} ^(.*)
+RewriteRule .* - [e=HTTP_AUTHORIZATION:%1]
+
+# Helpers internos: se incluyen con require_once desde PHP, pero no deben ser
+# alcanzables por HTTP. (`Require` solo afecta a las peticiones web.)
+<FilesMatch "^(_lib\.php|auth-doctor\.php|perfil\.php|ranking\.php|ia\.php|config\.local\.php|config\.php)$">
+    Require all denied
+</FilesMatch>

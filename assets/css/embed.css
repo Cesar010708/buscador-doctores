@@ -1,0 +1,53 @@
+/* ==========================================================================
+   Buscador de Doctores — estilos SOLO para el montaje embebido (embed.js)
+   --------------------------------------------------------------------------
+   Se carga dentro del Shadow DOM, después de app.css, chat.css y buscar.css.
+   Dos cosas cambian ahí adentro respecto a buscar.html:
+
+   1. No hay <body>. La regla `body` de app.css (fuente, color, tamaño) no casa
+      con nada dentro del shadow, así que se re-aloja en `.bd-raiz`.
+   2. No hay página propia. chat.css asume una cabecera de 62 px y un pie de
+      190 px para calcular `min-height` con 100vh; dentro de una tarjeta del
+      panel eso deja un hueco enorme. Aquí se anula.
+
+   Tema: solo claro. Los bloques oscuros de app.css usan `:root…`, que no casa
+   dentro del shadow, y `color-scheme: light` en :host lo deja explícito.
+   ========================================================================== */
+
+:host { display: block; color-scheme: light; }
+
+.bd-raiz {
+  font-family: 'BDPoppins', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+  font-size: 15px;
+  line-height: 1.55;
+  color: var(--ink);
+  -webkit-font-smoothing: antialiased;
+  /* Las burbujas y las opciones se diseñaron sobre el fondo #f6f9fb; en el
+     blanco de la tarjeta del panel pierden el borde. Se les da su lienzo. */
+  background: var(--surface-0);
+  border-radius: 12px;
+  padding: 16px;
+}
+
+.bd-cabecera { display: flex; justify-content: flex-end; margin-bottom: 10px; }
+
+/* Sin cabecera ni pie propios: el marco del chat mide lo que mide su contenido. */
+.chat-marco { min-height: 0; max-width: none; padding: 0 0 6px; }
+.chat-hilo  { max-height: min(60vh, 560px); }
+
+.resultados { padding: 0; }
+.resumen-busqueda h2 { font-size: 1.15rem; }
+.nota-legal { margin-top: 18px; }
+
+/* ── Aire dentro de la tarjeta del panel (~740 px de ancho útil) ──────────
+   Dos columnas de opciones, nunca tres; y más separación entre bloques de
+   resultados: en una tarjeta ya de por sí enmarcada, lo pegado se ve amontonado. */
+.chat-opciones { grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); }
+.chat-hilo { max-height: min(62vh, 620px); }
+.destacada { margin-bottom: 22px; }
+.comparativa-narrada { margin-bottom: 28px; }
+.lista-titulo { margin: 4px 0 16px; }
+.lista { gap: 16px; }
+.comparador { margin: 30px 0; }
+.afinar { margin: 26px 0; }
+.chips { gap: 7px; }

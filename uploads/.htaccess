@@ -1,0 +1,3 @@
+# Las cédulas profesionales son PII: nunca se sirven directamente por HTTP.
+# Se entregan solo a través de api/ver-cedula.php, que valida la sesión.
+Require all denied

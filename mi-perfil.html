@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+<html lang="es-MX">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="icon" href="favicon.png" type="image/png">
+<meta name="robots" content="noindex, nofollow">
+<title>Mi perfil · Buscador de doctores</title>
+<link rel="stylesheet" href="assets/css/app.css">
+<link rel="stylesheet" href="assets/css/doctor.css">
+</head>
+<body>
+
+<script src="assets/js/iconos.js"></script>
+
+<header class="cabecera">
+  <div class="contenedor cabecera-fila">
+    <a class="marca" href="buscar.html">
+      <img class="marca-logo" src="assets/img/logo-horizontal.webp" alt="Directorio médico" width="181" height="30">
+      <span class="marca-sep"></span>
+      <span class="marca-nombre">Buscador de doctores</span>
+    </a>
+    <span class="etiqueta-prueba"><svg><use href="#i-alerta"/></svg> Datos de prueba</span>
+    <span class="cabecera-espacio"></span>
+    <nav class="cabecera-nav">
+      <span class="chip" id="chip-doctor"></span>
+      <button class="btn btn-texto btn-chico" id="btn-tema" type="button" aria-label="Cambiar tema">
+        <svg><use href="#i-luna"/></svg>
+      </button>
+      <button class="btn btn-linea btn-chico" type="button" id="btn-salir">
+        <svg><use href="#i-salir"/></svg> Salir
+      </button>
+    </nav>
+  </div>
+</header>
+
+<main class="contenedor">
+
+  <div class="cargando" id="cargando">
+    <svg class="girando"><use href="#i-cargando"/></svg>
+    <span>Cargando tu perfil…</span>
+  </div>
+
+  <form class="perfil oculto" id="form-perfil" novalidate>
+
+    <!-- ══ Columna del formulario ═══════════════════════════════════════ -->
+    <div class="bloques">
+
+      <section class="tarjeta bloque">
+        <div class="bloque-cabeza">
+          <h3>Quién eres</h3>
+          <span class="puntos">15 puntos</span>
+        </div>
+        <div class="rejilla rejilla-2">
+          <div class="campo">
+            <label class="campo-etiqueta" for="nombre">Nombre como te ven los pacientes</label>
+            <input class="entrada" id="nombre" name="nombre" maxlength="120" required>
+          </div>
+          <div class="campo">
+            <label class="campo-etiqueta" for="telefono">Teléfono de contacto</label>
+            <input class="entrada" id="telefono" name="telefono" maxlength="20" inputmode="tel" placeholder="5512345678">
+            <span class="campo-ayuda">Sin contacto, quien te elige no puede llegar a ti.</span>
+          </div>
+        </div>
+        <div class="campo" style="margin-top:14px">
+          <span class="campo-etiqueta">Género</span>
+          <div class="opciones" role="radiogroup" aria-label="Género">
+            <label class="opcion"><input type="radio" name="genero" value="F"><span class="opcion-caja"><b>Mujer</b></span></label>
+            <label class="opcion"><input type="radio" name="genero" value="M"><span class="opcion-caja"><b>Hombre</b></span></label>
+            <label class="opcion"><input type="radio" name="genero" value="X"><span class="opcion-caja"><b>Prefiero no decirlo</b></span></label>
+          </div>
+          <span class="campo-ayuda">Muchos pacientes filtran por médico o médica. Sin el dato, quedas fuera de ese filtro.</span>
+        </div>
+      </section>
+
+      <section class="tarjeta bloque">
+        <div class="bloque-cabeza">
+          <h3>Qué haces</h3>
+          <span class="puntos">20 puntos</span>
+        </div>
+        <div class="campo">
+          <label class="campo-etiqueta" for="especialidad">Especialidad</label>
+          <select class="selector" id="especialidad" name="especialidad_id">
+            <option value="">Elige tu especialidad</option>
+          </select>
+          <span class="campo-ayuda">Es el primer filtro de toda búsqueda: sin ella no apareces.</span>
+        </div>
+        <div class="campo" style="margin-top:14px">
+          <span class="campo-etiqueta">Servicios que ofreces</span>
+          <div class="servicios-lista" id="servicios"></div>
+          <span class="campo-ayuda" id="servicios-ayuda">Elige tu especialidad para ver los servicios.</span>
+        </div>
+      </section>
+
+      <section class="tarjeta bloque">
+        <div class="bloque-cabeza">
+          <h3>Dónde atiendes</h3>
+          <span class="puntos">12 puntos</span>
+        </div>
+        <div class="ubicaciones" id="ubicaciones"></div>
+        <button class="btn btn-linea btn-chico" type="button" id="btn-agregar-ubicacion" style="margin-top:12px">
+          <svg><use href="#i-cruz"/></svg> Agregar otro lugar
+        </button>
+        <p class="campo-ayuda" style="margin-top:10px">Es lo que te hace salir como "el más cercano" para quien vive por ahí. Puedes registrar hasta tres lugares.</p>
+      </section>
+
+      <section class="tarjeta bloque">
+        <div class="bloque-cabeza">
+          <h3>Cómo y a quién atiendes</h3>
+          <span class="puntos">13 puntos</span>
+        </div>
+        <div class="campo">
+          <span class="campo-etiqueta">Modalidad</span>
+          <div class="servicios-lista">
+            <label class="servicio-opcion"><input type="checkbox" name="modalidad" value="consultorio"><span>Consultorio</span></label>
+            <label class="servicio-opcion"><input type="checkbox" name="modalidad" value="hospital"><span>Hospital</span></label>
+            <label class="servicio-opcion"><input type="checkbox" name="modalidad" value="telemedicina"><span>Videoconsulta</span></label>
+          </div>
+        </div>
+        <div class="rejilla rejilla-2" style="margin-top:14px">
+          <div class="campo">
+            <label class="campo-etiqueta" for="disponibilidad">Qué tan pronto puedes atender</label>
+            <select class="selector" id="disponibilidad" name="disponibilidad">
+              <option value="">Sin especificar</option>
+              <option value="inmediata">El mismo día</option>
+              <option value="esta_semana">Esta semana</option>
+              <option value="programada">Con cita programada</option>
+            </select>
+            <span class="campo-ayuda">Te posiciona con quien tiene prisa.</span>
+          </div>
+          <div class="campo">
+            <span class="campo-etiqueta">Idiomas</span>
+            <div class="servicios-lista">
+              <label class="servicio-opcion"><input type="checkbox" name="idiomas" value="es"><span>Español</span></label>
+              <label class="servicio-opcion"><input type="checkbox" name="idiomas" value="en"><span>Inglés</span></label>
+              <label class="servicio-opcion"><input type="checkbox" name="idiomas" value="fr"><span>Francés</span></label>
+            </div>
+          </div>
+        </div>
+        <div class="campo" style="margin-top:14px">
+          <span class="campo-etiqueta">A quién atiendes</span>
+          <label class="casilla"><input type="checkbox" name="atiende_ninos" value="1"> Atiendo niñas y niños</label>
+          <label class="casilla"><input type="checkbox" name="atiende_adultos" value="1"> Atiendo personas adultas</label>
+          <span class="campo-ayuda">Marcar "niñas y niños" te suma en todas las búsquedas pediátricas.</span>
+        </div>
+      </section>
+
+      <section class="tarjeta bloque">
+        <div class="bloque-cabeza">
+          <h3>Cuánto cobras</h3>
+          <span class="puntos">10 puntos</span>
+        </div>
+        <div class="rejilla rejilla-2">
+          <div class="campo">
+            <label class="campo-etiqueta" for="precio-min">Consulta desde ($)</label>
+            <input class="entrada" id="precio-min" name="precio_min" type="number" min="0" max="100000" step="50">
+          </div>
+          <div class="campo">
+            <label class="campo-etiqueta" for="precio-max">Hasta ($)</label>
+            <input class="entrada" id="precio-max" name="precio_max" type="number" min="0" max="100000" step="50">
+          </div>
+        </div>
+        <p class="campo-ayuda" style="margin-top:10px">Con precio apareces cuando filtran por presupuesto. Sin él, al paciente le decimos "no especifica precio".</p>
+      </section>
+
+      <section class="tarjeta bloque">
+        <div class="bloque-cabeza">
+          <h3>Tu trayectoria</h3>
+          <span class="puntos">21 puntos</span>
+        </div>
+        <div class="rejilla rejilla-2">
+          <div class="campo">
+            <label class="campo-etiqueta" for="anios">Años de experiencia</label>
+            <input class="entrada" id="anios" name="anios_experiencia" type="number" min="0" max="70">
+            <span class="campo-ayuda">Decide quién es "el de más experiencia".</span>
+          </div>
+          <div class="campo">
+            <label class="campo-etiqueta" for="formacion">Formación</label>
+            <input class="entrada" id="formacion" name="formacion" maxlength="500" placeholder="Universidad, especialidad, alta especialidad">
+          </div>
+        </div>
+        <div class="campo" style="margin-top:14px">
+          <label class="campo-etiqueta" for="certificaciones">Certificaciones o consejos</label>
+          <input class="entrada" id="certificaciones" name="certificaciones" maxlength="500" placeholder="Consejo Mexicano de…">
+        </div>
+        <div class="campo" style="margin-top:14px">
+          <label class="campo-etiqueta" for="bio">Cómo te describes</label>
+          <textarea class="area" id="bio" name="bio" maxlength="1000" placeholder="En qué te enfocas, cómo es tu consulta, qué puede esperar el paciente."></textarea>
+          <span class="campo-ayuda"><span id="bio-cuenta">0</span> de 1000 caracteres · a partir de 60 cuenta para tu perfil.</span>
+        </div>
+      </section>
+
+      <section class="tarjeta bloque">
+        <div class="bloque-cabeza">
+          <h3>Tu cédula profesional</h3>
+          <span class="puntos">9 puntos</span>
+        </div>
+        <div class="campo">
+          <label class="campo-etiqueta" for="cedula">Número de cédula</label>
+          <input class="entrada" id="cedula" name="cedula" maxlength="10" inputmode="numeric" placeholder="1234567">
+        </div>
+        <div class="subida" style="margin-top:14px">
+          <div class="subida-caja">
+            <svg><use href="#i-archivo"/></svg>
+            <div class="crece">
+              <b id="cedula-estado">Sin documento</b>
+              <small>PDF, JPG o PNG, hasta 5 MB. Solo lo ve el equipo del directorio.</small>
+            </div>
+            <label class="btn btn-linea btn-chico">
+              <svg><use href="#i-subir"/></svg> Elegir archivo
+              <input type="file" name="cedula_archivo" id="cedula-archivo" accept="application/pdf,image/jpeg,image/png" class="solo-lectores">
+            </label>
+          </div>
+          <p class="campo-ayuda">Con número y documento obtienes el sello <strong>Cédula registrada</strong> que el paciente ve en tu tarjeta. En este prototipo se valida el formato y que haya documento; el cotejo contra el registro público llegará después, y hasta entonces el sello no dice "verificada".</p>
+        </div>
+      </section>
+
+      <div class="barra-guardar">
+        <span class="barra-mensaje" id="barra-mensaje"></span>
+        <span class="crece"></span>
+        <button class="btn btn-texto btn-chico" type="button" id="btn-guardar-salir">Guardar y seguir después</button>
+        <button class="btn btn-primario" type="submit" id="btn-guardar">Guardar cambios</button>
+      </div>
+    </div>
+
+    <!-- ══ Columna lateral ══════════════════════════════════════════════ -->
+    <aside class="columna-lateral">
+
+      <section class="tarjeta panel">
+        <div class="panel-titulo">Tu perfil</div>
+        <div class="medidor">
+          <div style="display:flex;align-items:baseline;gap:10px">
+            <span class="medidor-cifra" id="medidor-cifra">0%</span>
+            <span class="nivel-sello" id="nivel-sello" data-nivel="basico">
+              <svg><use href="#i-escudo"/></svg> <span id="nivel-texto">Básico</span>
+            </span>
+          </div>
+          <div class="medidor-pista">
+            <div class="medidor-barra" id="medidor-barra" data-nivel="basico" style="width:0%"
+                 role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"
+                 aria-label="Completitud de tu perfil"></div>
+          </div>
+          <div class="medidor-escala">
+            <span data-escala="basico">Básico</span>
+            <span data-escala="destacado">Destacado · 50%</span>
+            <span data-escala="top">Top · 80%</span>
+          </div>
+        </div>
+        <div id="festejo" class="oculto" style="margin-top:12px"></div>
+      </section>
+
+      <section class="tarjeta panel">
+        <div class="panel-titulo"><svg style="width:13px;height:13px;vertical-align:-2px"><use href="#i-ojo"/></svg> Así te ven los pacientes</div>
+        <div class="previa">
+          <div class="previa-tarjeta" id="previa"></div>
+        </div>
+      </section>
+
+      <section class="tarjeta panel">
+        <div class="panel-titulo">Lo que te falta</div>
+        <div class="pendientes" id="pendientes"></div>
+      </section>
+
+      <section class="tarjeta panel" id="panel-metricas">
+        <div class="panel-titulo">Tus números (últimos 7 días)</div>
+        <div class="metricas">
+          <div class="metrica"><b id="m-apariciones">0</b><span>veces que apareciste</span></div>
+          <div class="metrica"><b id="m-elecciones">0</b><span>veces que te eligieron</span></div>
+        </div>
+        <p class="campo-ayuda" style="margin-top:10px" id="demanda-nota"></p>
+      </section>
+
+    </aside>
+  </form>
+</main>
+
+<footer class="pie">
+  <div class="contenedor">
+    <p><strong>Prototipo con datos ficticios.</strong> Tu completitud mejora la precisión con la que te emparejamos y desempata; no compra posiciones en el ranking.</p>
+  </div>
+</footer>
+
+<script src="assets/js/tema.js"></script>
+<script src="assets/js/mi-perfil.js"></script>
+</body>
+</html>

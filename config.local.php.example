@@ -1,0 +1,31 @@
+<?php
+/**
+ * Buscador de Doctores — configuración local (formato alternativo)
+ * ================================================================
+ * Úsalo solo si tu hosting no permite variables de entorno ni un archivo `.env`.
+ * Lo normal es copiar `.env.example` como `.env`.
+ *
+ *   1. Copia este archivo como "config.local.php" (sin el .example).
+ *   2. config.local.php está en .gitignore y bloqueado por .htaccess.
+ *   3. Si existe, sus valores mandan sobre `.env`.
+ */
+
+// ── MariaDB ─────────────────────────────────────────────────────────────────
+putenv('DB_HOST=127.0.0.1');
+putenv('DB_NAME=buscador_doctores');
+putenv('DB_USER=buscador');
+putenv('DB_PASS=cambia-esta-contrasena');
+putenv('DB_PORT=3306');
+
+// ── Prefijo de tablas: `bd_demo_` para la demo, `bd_` para las definitivas ──
+putenv('BD_PREFIJO=bd_demo_');
+
+// ── OpenAI ──────────────────────────────────────────────────────────────────
+putenv('OPENAI_API_KEY=sk-tu-clave-de-openai');
+putenv('OPENAI_CHAT_MODEL=gpt-4o-mini');
+
+// ── CORS: origen desde el que se sirven buscar.html / doctores.html ────────
+putenv('BD_ORIGIN=https://tu-dominio.com');
+
+// ── Sal para hashear la IP en la bitácora de búsquedas (cadena larga al azar) ─
+putenv('BD_IP_SALT=cambia-esto-por-una-cadena-larga-y-aleatoria');

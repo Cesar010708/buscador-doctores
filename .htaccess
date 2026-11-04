@@ -1,0 +1,22 @@
+# Buscador de Doctores — prototipo con DATOS DE PRUEBA.
+# Mientras no sea producción, nada de esta carpeta debe indexarse.
+<IfModule mod_headers.c>
+    Header set X-Robots-Tag "noindex, nofollow, noarchive"
+    Header set X-Content-Type-Options "nosniff"
+    Header set Referrer-Policy "strict-origin-when-cross-origin"
+</IfModule>
+
+# La configuración lleva las credenciales de MariaDB y la llave de OpenAI. Hoy PHP
+# las ejecuta y no filtra nada, pero si el intérprete dejara de procesar los .php
+# el archivo quedaría expuesto en claro. Esto lo impide.
+<FilesMatch "^config.*\.php(\.example)?$">
+    Require all denied
+</FilesMatch>
+
+# `.env` lleva las mismas credenciales y, a diferencia de un .php, se serviría
+# en texto plano. Nunca por HTTP (incluye .env.example y cualquier .env.*).
+<FilesMatch "^\.env">
+    Require all denied
+</FilesMatch>
+
+DirectoryIndex buscar.html index.html

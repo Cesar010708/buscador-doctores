@@ -1,0 +1,389 @@
+/* ==========================================================================
+   Buscador de Doctores — hoja de estilo del prototipo
+   --------------------------------------------------------------------------
+   CSS a mano, sin frameworks ni build. Poppins auto-alojada.
+   Paleta: azul (#01587A) sobre neutros. La rampa de los medidores está
+   validada por contraste (rampa ordinal de un solo tono, L monótona, extremo
+   claro por encima de 2:1 contra la superficie) en claro y en oscuro; el modo
+   oscuro tiene sus propios pasos, no es una inversión.
+   ========================================================================== */
+
+@font-face { font-family: 'BDPoppins'; src: url('../fonts/poppins-400.woff2') format('woff2'); font-weight: 400; font-display: swap; }
+@font-face { font-family: 'BDPoppins'; src: url('../fonts/poppins-500.woff2') format('woff2'); font-weight: 500; font-display: swap; }
+@font-face { font-family: 'BDPoppins'; src: url('../fonts/poppins-600.woff2') format('woff2'); font-weight: 600; font-display: swap; }
+@font-face { font-family: 'BDPoppins'; src: url('../fonts/poppins-700.woff2') format('woff2'); font-weight: 700; font-display: swap; }
+
+/* `:host` además de `:root`: cuando el buscador se monta dentro de un Shadow DOM
+   (embed.js, en el panel del paciente) `:root` no casa con nada de ahí adentro y
+   los tokens no llegarían. Los bloques oscuros de abajo siguen en `:root…` a
+   propósito: no casan dentro del shadow, y así el panel queda fijado en claro. */
+:root, :host {
+  color-scheme: light;
+
+  /* ── Marca ─────────────────────────────────────────────────────
+     Los tres colores que se repiten en el chatbot, el panel y la tienda; son
+     los de marca de verdad. El dorado es el acento de las llamadas a la acción,
+     igual que en el bot de financiamiento. */
+  --brand:        #01587A;   /* azul · primario */
+  --brand-hover:  #01405c;   /* azul profundo (sombra del degradado del login) */
+  --brand-ink:    #ffffff;   /* texto encima del azul */
+  --secundario:   #5CB3C1;   /* turquesa */
+  --accent:       #E7BA11;   /* dorado · CTA */
+  --accent-ink:   #3d3000;
+  --grad:         linear-gradient(135deg, #01587A, #5CB3C1);
+  --grad-suave:   linear-gradient(135deg, #01587A 0%, #3a9fb0 100%);
+
+  --surface-0:    #f6f9fb;   /* fondo de aplicación (tienda y panel) */
+  --surface-1:    #ffffff;
+  --surface-2:    #eef2f6;
+  --surface-3:    #e3eaf0;
+  --line:         #e7eaee;   /* borde neutro compartido por todo el ecosistema */
+  --line-strong:  #d8e6ea;
+
+  --ink:          #1a2b35;   /* tinta */
+  --ink-2:        #4a5c67;
+  --ink-3:        #8a8a9a;   /* gris */
+
+  /* Medidores: un solo tono, magnitud por longitud (no por color). */
+  --bar:          #01587A;
+  --bar-track:    #e4ebef;
+
+  /* Rampa ordinal de nivel de perfil (básico → destacado → top). */
+  --nivel-1:      #7BB6CC;
+  --nivel-2:      #3D8CA8;
+  --nivel-3:      #01587A;
+
+  --ok:           #12664a;
+  --ok-bg:        #e2f2ec;
+  --aviso:        #8a5300;
+  --aviso-bg:     #fbf0dc;
+
+  --radio:        14px;      /* tarjeta estándar del ecosistema */
+  --radio-sm:     10px;
+  --radio-pill:   22px;      /* botones y paneles grandes */
+  --sombra:       0 4px 22px rgba(30, 41, 59, .08);
+  --sombra-alta:  0 10px 30px rgba(30, 41, 59, .14);
+  --halo:         0 0 0 3px rgba(92, 179, 193, .18);   /* foco turquesa */
+  --ease:         cubic-bezier(.25, 1, .5, 1);
+  --ancho:        1120px;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    color-scheme: dark;
+    --brand:       #5CB3C1;   /* en oscuro manda el turquesa: el azul no contrasta */
+    --brand-hover: #7cc6d2;
+    --brand-ink:   #06222c;
+    --secundario:  #4FA3BC;
+    --accent:      #E7BA11;
+    --accent-ink:  #2a2100;
+    --grad:        linear-gradient(135deg, #01587A, #5CB3C1);
+    --grad-suave:  linear-gradient(135deg, #014458 0%, #2f7d8f 100%);
+
+    --surface-0:   #0f1417;
+    --surface-1:   #171e22;
+    --surface-2:   #1f272c;
+    --surface-3:   #283238;
+    --line:        #2b353b;
+    --line-strong: #3a474e;
+    --halo:        0 0 0 3px rgba(92, 179, 193, .28);
+
+    --ink:         #eef4f7;
+    --ink-2:       #b7c5cd;
+    --ink-3:       #91a2ac;
+
+    --bar:         #4FA3BC;
+    --bar-track:   #253036;
+
+    --nivel-1:     #2E7C95;
+    --nivel-2:     #4FA3BC;
+    --nivel-3:     #7FCEE0;
+
+    --ok:          #7fd9b6;
+    --ok-bg:       #12302a;
+    --aviso:       #eec26a;
+    --aviso-bg:    #33280f;
+
+    --sombra:      0 1px 2px rgba(0, 0, 0, .4), 0 8px 24px -12px rgba(0, 0, 0, .6);
+    --sombra-alta: 0 2px 6px rgba(0, 0, 0, .45), 0 18px 40px -18px rgba(0, 0, 0, .7);
+  }
+}
+
+:root[data-theme="dark"] {
+  color-scheme: dark;
+  --brand:       #5CB3C1;
+  --brand-hover: #7cc6d2;
+  --brand-ink:   #06222c;
+  --secundario:  #4FA3BC;
+  --accent:      #E7BA11;
+  --accent-ink:  #2a2100;
+  --grad:        linear-gradient(135deg, #01587A, #5CB3C1);
+  --grad-suave:  linear-gradient(135deg, #014458 0%, #2f7d8f 100%);
+  --halo:        0 0 0 3px rgba(92, 179, 193, .28);
+  --surface-0:   #0f1417;
+  --surface-1:   #171e22;
+  --surface-2:   #1f272c;
+  --surface-3:   #283238;
+  --line:        #2b353b;
+  --line-strong: #3a474e;
+  --ink:         #eef4f7;
+  --ink-2:       #b7c5cd;
+  --ink-3:       #91a2ac;
+  --bar:         #4FA3BC;
+  --bar-track:   #253036;
+  --nivel-1:     #2E7C95;
+  --nivel-2:     #4FA3BC;
+  --nivel-3:     #7FCEE0;
+  --ok:          #7fd9b6;
+  --ok-bg:       #12302a;
+  --aviso:       #eec26a;
+  --aviso-bg:    #33280f;
+  --sombra:      0 1px 2px rgba(0, 0, 0, .4), 0 8px 24px -12px rgba(0, 0, 0, .6);
+  --sombra-alta: 0 2px 6px rgba(0, 0, 0, .45), 0 18px 40px -18px rgba(0, 0, 0, .7);
+}
+
+/* ── Base ─────────────────────────────────────────────────────────────── */
+*, *::before, *::after { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  background: var(--surface-0);
+  color: var(--ink);
+  font-family: 'BDPoppins', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+  font-size: 15px;
+  line-height: 1.55;
+  -webkit-font-smoothing: antialiased;
+}
+
+h1, h2, h3, h4 { margin: 0; line-height: 1.25; font-weight: 600; letter-spacing: -.01em; }
+h1 { font-size: 1.75rem; }
+h2 { font-size: 1.3rem; }
+h3 { font-size: 1.05rem; }
+p  { margin: 0; }
+a  { color: var(--brand); }
+
+button, input, select, textarea { font: inherit; color: inherit; }
+svg { flex: none; }
+
+.contenedor { width: 100%; max-width: var(--ancho); margin: 0 auto; padding: 0 20px; }
+.oculto { display: none !important; }
+.solo-lectores {
+  position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px;
+  overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; border: 0;
+}
+
+:where(a, button, input, select, textarea, [tabindex]):focus-visible {
+  outline: 2px solid var(--brand);
+  outline-offset: 2px;
+  border-radius: 6px;
+}
+
+/* ── Encabezado ───────────────────────────────────────────────────────── */
+.cabecera {
+  position: sticky; top: 0; z-index: 40;
+  background: color-mix(in srgb, var(--surface-1) 88%, transparent);
+  backdrop-filter: blur(10px);
+  border-bottom: 1px solid var(--line);
+}
+.cabecera-fila { display: flex; align-items: center; gap: 14px; height: 62px; }
+.marca { display: flex; align-items: center; gap: 11px; color: var(--ink); text-decoration: none; min-width: 0; }
+.marca-logo { height: 30px; width: auto; flex: none; }
+/* En oscuro el wordmark gris del logo no se lee: se fuerza a blanco, el mismo
+   truco que usan el header de la tienda y el login del panel. */
+:root[data-theme="dark"] .marca-logo { filter: brightness(0) invert(1); }
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) .marca-logo { filter: brightness(0) invert(1); }
+}
+.marca-sep { width: 1px; height: 20px; background: var(--line); flex: none; }
+.marca-nombre { font-weight: 600; font-size: 14.5px; white-space: nowrap; }
+.cabecera-espacio { flex: 1; }
+.cabecera-nav { display: flex; align-items: center; gap: 8px; }
+
+.etiqueta-prueba {
+  display: inline-flex; align-items: center; gap: 6px;
+  padding: 3px 9px; border-radius: 99px;
+  background: var(--aviso-bg); color: var(--aviso);
+  font-size: 11.5px; font-weight: 600; letter-spacing: .01em;
+  border: 1px solid color-mix(in srgb, var(--aviso) 30%, transparent);
+}
+.etiqueta-prueba svg { width: 13px; height: 13px; }
+
+/* En pantallas angostas la cabecera no cabe entera: se conserva lo esencial
+   (el aviso de datos de prueba y las acciones) y se recorta lo demás. */
+@media (max-width: 560px) {
+  .cabecera-fila { gap: 8px; }
+  .marca-sep, .marca-nombre { display: none; }   /* solo el logo */
+  #chip-doctor { display: none; }
+  .cabecera-nav .btn { padding-left: 11px; padding-right: 11px; }
+}
+/* En un teléfono (390 px) el logo de 181 px, el aviso y dos botones no caben: la
+   marca se encogía por debajo del logo y el aviso se le montaba encima. Se achica
+   el logo, el aviso queda solo como icono (el pie ya explica que los datos son
+   ficticios) y los botones no se parten en dos líneas. */
+@media (max-width: 420px) {
+  .marca-logo { height: 24px; }
+  .etiqueta-prueba { font-size: 0; gap: 0; padding: 5px; flex: none; }
+  .cabecera-nav { flex: none; }
+  .cabecera-nav .btn { white-space: nowrap; }
+  /* «Soy paciente» lleva al mismo lugar que el logo: en el teléfono sobra. */
+  .cabecera-nav a.btn-texto[href="buscar.html"] { display: none; }
+}
+
+/* ── Botones ──────────────────────────────────────────────────────────── */
+.btn {
+  display: inline-flex; align-items: center; justify-content: center; gap: 8px;
+  padding: 11px 20px; border-radius: var(--radio-pill); border: 1px solid transparent;
+  background: var(--surface-2); color: var(--ink);
+  font-size: 14.5px; font-weight: 600; cursor: pointer; text-decoration: none;
+  transition: background .18s var(--ease), border-color .18s var(--ease), transform .18s var(--ease);
+}
+.btn:hover  { background: var(--surface-3); transform: translateY(-2px); }
+.btn:active { transform: translateY(0); }
+.btn svg    { width: 17px; height: 17px; }
+.btn[disabled] { opacity: .5; cursor: not-allowed; }
+
+.btn-primario { background: var(--brand); color: var(--brand-ink); box-shadow: 0 3px 12px rgba(30, 41, 59, .28); }
+.btn-primario:hover { background: var(--brand-hover); box-shadow: 0 6px 18px rgba(30, 41, 59, .4); }
+
+/* El dorado es el acento de las llamadas a la acción en todo el sitio. */
+.btn-acento { background: var(--accent); color: var(--accent-ink);
+  box-shadow: 0 1px 3px rgba(231, 186, 17, .30), 0 4px 12px rgba(231, 186, 17, .38); }
+.btn-acento:hover { filter: brightness(1.06);
+  box-shadow: 0 2px 5px rgba(231, 186, 17, .32), 0 8px 20px rgba(231, 186, 17, .45); }
+
+.btn-linea { background: var(--surface-1); border-width: 1.5px; border-color: var(--line-strong); color: var(--brand); }
+.btn-linea:hover { background: var(--surface-2); }
+
+.btn-texto { background: transparent; padding: 8px 10px; color: var(--ink-2); }
+.btn-texto:hover { background: var(--surface-2); color: var(--ink); }
+
+.btn-chico  { padding: 8px 14px; font-size: 12.5px; }
+.btn-grande { padding: 13px 26px; font-size: 15.5px; border-radius: 11px; }
+
+/* Avatar generado (assets/js/avatar.js). Nunca es una foto de una persona real. */
+.avatar { display: block; flex: none; border-radius: 13px; }
+
+/* ── Tarjetas ─────────────────────────────────────────────────────────── */
+.tarjeta {
+  background: var(--surface-1);
+  border: 1px solid var(--line);
+  border-radius: var(--radio);
+  box-shadow: var(--sombra);
+}
+.tarjeta-alza { transition: transform .22s var(--ease), box-shadow .22s var(--ease), border-color .22s var(--ease); }
+.tarjeta-alza:hover { transform: translateY(-6px); box-shadow: 0 16px 38px rgba(30, 41, 59, .16); border-color: var(--secundario); }
+
+/* ── Chips ────────────────────────────────────────────────────────────── */
+.chip {
+  display: inline-flex; align-items: center; gap: 6px;
+  padding: 4px 10px; border-radius: 99px;
+  background: var(--surface-2); color: var(--ink-2);
+  font-size: 12.5px; font-weight: 500;
+  /* En pantallas angostas un chip largo con nowrap empujaba la página entera:
+     que envuelva su texto es preferible a un desbordamiento horizontal. */
+  max-width: 100%; white-space: normal; overflow-wrap: anywhere;
+}
+.chip svg { width: 14px; height: 14px; color: var(--ink-3); }
+.chip-ok  { background: var(--ok-bg); color: var(--ok); }
+.chip-ok svg { color: currentColor; }
+.chip-aviso { background: var(--aviso-bg); color: var(--aviso); }
+.chip-aviso svg { color: currentColor; }
+.chips { display: flex; flex-wrap: wrap; gap: 6px; }
+
+/* ── Medidor de sub-scores ────────────────────────────────────────────────
+   Magnitud: un solo tono, el valor se lee por longitud y por su número. La
+   identidad de cada eje va en su etiqueta, nunca en el color.               */
+.ejes { display: grid; gap: 9px; }
+.eje { display: grid; grid-template-columns: 118px 1fr 34px; align-items: center; gap: 10px; }
+.eje-nombre { font-size: 12.5px; color: var(--ink-2); }
+.eje-pista {
+  position: relative; height: 8px; border-radius: 4px;
+  background: var(--bar-track); overflow: hidden;
+}
+.eje-barra {
+  position: absolute; inset: 0 auto 0 0;
+  background: var(--bar);
+  border-radius: 0 4px 4px 0;      /* extremo del dato redondeado, base cuadrada */
+  transition: width .5s var(--ease);
+}
+.eje-valor { font-size: 12.5px; font-weight: 600; color: var(--ink-2); text-align: right; font-variant-numeric: tabular-nums; }
+.eje-sin-dato { font-size: 12px; color: var(--ink-3); font-style: italic; }
+.eje[data-peso="0"] .eje-barra { opacity: .45; }
+
+/* ── Medidor de completitud (perfil del doctor) ──────────────────────── */
+.medidor { display: grid; gap: 10px; }
+.medidor-cifra { font-size: 2.6rem; font-weight: 700; line-height: 1; letter-spacing: -.02em; font-variant-numeric: tabular-nums; }
+.medidor-pista { height: 12px; border-radius: 6px; background: var(--bar-track); overflow: hidden; }
+.medidor-barra { height: 100%; border-radius: 0 6px 6px 0; background: var(--nivel-1); transition: width .6s var(--ease), background .3s var(--ease); }
+.medidor-barra[data-nivel="destacado"] { background: var(--nivel-2); }
+.medidor-barra[data-nivel="top"]       { background: var(--nivel-3); }
+.medidor-escala { display: flex; justify-content: space-between; font-size: 11.5px; color: var(--ink-3); }
+.medidor-escala span { position: relative; }
+.medidor-escala .activo { color: var(--ink); font-weight: 600; }
+
+/* ── Avisos ───────────────────────────────────────────────────────────── */
+.aviso {
+  display: flex; gap: 11px; align-items: flex-start;
+  padding: 13px 15px; border-radius: var(--radio-sm);
+  background: var(--surface-2); color: var(--ink-2); font-size: 13.5px;
+}
+.aviso svg { width: 18px; height: 18px; margin-top: 1px; color: var(--ink-3); }
+.aviso-fuerte { background: var(--aviso-bg); color: var(--aviso); }
+.aviso-fuerte svg { color: currentColor; }
+
+/* ── Formularios ──────────────────────────────────────────────────────── */
+.campo { display: grid; gap: 7px; }
+.campo-etiqueta { font-size: 13.5px; font-weight: 600; color: var(--ink); }
+.campo-ayuda { font-size: 12.5px; color: var(--ink-3); }
+.campo-error { font-size: 12.5px; color: var(--aviso); font-weight: 500; }
+
+.entrada, .area, .selector {
+  width: 100%; padding: 11px 13px;
+  background: var(--surface-1); color: var(--ink);
+  border: 1.5px solid var(--line); border-radius: var(--radio-pill);
+  transition: border-color .18s var(--ease), box-shadow .18s var(--ease);
+}
+.entrada::placeholder, .area::placeholder { color: var(--ink-3); }
+.entrada:focus, .area:focus, .selector:focus {
+  outline: none; border-color: var(--secundario);
+  box-shadow: var(--halo);
+}
+.area { min-height: 92px; resize: vertical; line-height: 1.5; border-radius: var(--radio); }
+
+/* Opciones tipo tarjeta (radio / checkbox ocultos) */
+.opciones { display: grid; gap: 9px; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); }
+.opcion { position: relative; display: block; cursor: pointer; }
+.opcion input { position: absolute; opacity: 0; width: 0; height: 0; }
+.opcion-caja {
+  display: grid; gap: 3px; padding: 12px 14px;
+  border: 1px solid var(--line-strong); border-radius: 11px;
+  background: var(--surface-1);
+  transition: border-color .18s var(--ease), background .18s var(--ease);
+  height: 100%;
+}
+.opcion-caja b { font-size: 14px; font-weight: 600; }
+.opcion-caja small { font-size: 12px; color: var(--ink-3); }
+.opcion:hover .opcion-caja { border-color: var(--line-strong); background: var(--surface-2); }
+.opcion input:checked + .opcion-caja {
+  border-color: var(--brand);
+  background: color-mix(in srgb, var(--brand) 8%, var(--surface-1));
+}
+.opcion input:focus-visible + .opcion-caja { outline: 2px solid var(--brand); outline-offset: 2px; }
+
+.casilla { display: flex; align-items: center; gap: 9px; cursor: pointer; font-size: 13.5px; color: var(--ink-2); }
+.casilla input { width: 17px; height: 17px; accent-color: var(--brand); cursor: pointer; }
+
+/* ── Pie ──────────────────────────────────────────────────────────────── */
+.pie {
+  margin-top: 56px; padding: 26px 0 40px;
+  border-top: 1px solid var(--line);
+  color: var(--ink-3); font-size: 12.5px;
+}
+.pie p + p { margin-top: 6px; }
+
+/* ── Cargando ─────────────────────────────────────────────────────────── */
+.girando { animation: girar 1s linear infinite; }
+@keyframes girar { to { transform: rotate(360deg); } }
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation-duration: .01ms !important; transition-duration: .01ms !important; }
+}

@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="es-MX">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="icon" href="favicon.png" type="image/png">
+<meta name="robots" content="noindex, nofollow">
+<title>Buscador de doctores</title>
+<meta name="description" content="Prototipo de buscador y recomendador de médicos. Datos de prueba.">
+<link rel="stylesheet" href="assets/css/app.css">
+<link rel="stylesheet" href="assets/css/chat.css">
+<link rel="stylesheet" href="assets/css/buscar.css">
+</head>
+<body>
+
+<!-- Hoja de iconos compartida: se inserta aquí mismo, antes de cualquier <use> -->
+<script src="assets/js/iconos.js"></script>
+
+<header class="cabecera">
+  <div class="contenedor cabecera-fila">
+    <a class="marca" href="buscar.html">
+      <img class="marca-logo" src="assets/img/logo-horizontal.webp" alt="Directorio médico" width="181" height="30">
+      <span class="marca-sep"></span>
+      <span class="marca-nombre">Buscador de doctores</span>
+    </a>
+    <span class="etiqueta-prueba"><svg><use href="#i-alerta"/></svg> Datos de prueba</span>
+    <span class="cabecera-espacio"></span>
+    <nav class="cabecera-nav">
+      <button class="btn btn-texto btn-chico" id="btn-tema" type="button" aria-label="Cambiar tema">
+        <svg><use href="#i-luna"/></svg>
+      </button>
+      <a class="btn btn-linea btn-chico" href="doctores.html">Soy doctor</a>
+    </nav>
+  </div>
+</header>
+
+<main class="contenedor">
+
+  <!-- ══ La conversación ═══════════════════════════════════════════════ -->
+  <section id="vista-chat" class="chat-marco">
+    <div class="chat-intro">
+      <h1>Encuentra al médico que te conviene</h1>
+      <p>Conversamos un minuto y te digo quién te conviene <strong>y por qué</strong>.</p>
+    </div>
+    <div id="chat"></div>
+    <datalist id="lista-zonas"></datalist>
+  </section>
+
+  <!-- ══ Resultados ═══════════════════════════════════════════════════ -->
+  <section id="vista-resultados" class="resultados oculto" aria-live="polite">
+    <div class="cargando oculto" id="cargando">
+      <svg class="girando"><use href="#i-cargando"/></svg>
+      <span>Buscando y comparando perfiles…</span>
+    </div>
+    <div id="contenido-resultados"></div>
+  </section>
+
+</main>
+
+<footer class="pie">
+  <div class="contenedor">
+    <p><strong>Esto es un prototipo con datos ficticios.</strong> Ningún perfil corresponde a un médico real.</p>
+    <p>Este buscador es un directorio: no da diagnósticos, tratamientos ni consejo médico. Ante una urgencia, acude a un servicio de urgencias.</p>
+    <p>El orden de los resultados se calcula con reglas fijas y verificables; la inteligencia artificial solo redacta la explicación con los datos de cada perfil.</p>
+  </div>
+</footer>
+
+<script src="assets/js/tema.js"></script>
+<script src="assets/js/avatar.js"></script>
+<script src="assets/js/conversacion.js"></script>
+<script src="assets/js/guion-paciente.js"></script>
+<script src="assets/js/buscar.js"></script>
+</body>
+</html>

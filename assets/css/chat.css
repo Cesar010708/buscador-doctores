@@ -1,0 +1,212 @@
+/* ==========================================================================
+   Conversación a pantalla completa
+   --------------------------------------------------------------------------
+   La anatomía es la misma que la de los widgets de la plataforma (el asistente del sitio y el
+   bot de financiamiento) para que se sienta de la misma casa: esquinas
+   asimétricas según quién habla, borde dorado en la burbuja del asistente,
+   tres puntos rebotando mientras piensa. Cambia la escala: aquí la conversación
+   ES la página, no un panel de 370 px.
+   ========================================================================== */
+
+.chat-marco {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  max-width: 720px;
+  margin: 0 auto;
+  padding: 22px 0 34px;
+  min-height: calc(100vh - 62px - 190px);
+}
+
+.chat-intro { display: grid; gap: 8px; margin-bottom: 4px; }
+.chat-intro h1 { font-size: clamp(1.5rem, 3.6vw, 2rem); }
+.chat-intro p  { color: var(--ink-2); font-size: 14.5px; }
+
+/* ── Hilo ───────────────────────────────────────────────────────────────── */
+.chat-hilo {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  overflow-y: auto;
+  overflow-anchor: none;      /* el anclaje del navegador pelea con el nuestro */
+  scroll-behavior: smooth;
+  padding: 4px 2px;
+  max-height: min(56vh, 520px);
+}
+
+.chat-msg { display: flex; gap: 10px; align-items: flex-start; }
+.chat-msg-yo { justify-content: flex-end; }
+
+.chat-avatar {
+  width: 34px; height: 34px; flex: none; border-radius: 50%;
+  display: grid; place-items: center;
+  background: var(--surface-1);
+  border: 1px solid var(--line);
+  box-shadow: 0 2px 8px rgba(30, 41, 59, .08);
+}
+.chat-avatar img { width: 17px; height: auto; display: block; }
+
+.chat-burbuja {
+  font-size: 15px; line-height: 1.55; max-width: 84%;
+  padding: 12px 16px;
+  animation: chat-entra .24s var(--ease) both;
+}
+@keyframes chat-entra {
+  from { opacity: 0; transform: translateY(8px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* Esquinas asimétricas: el pico apunta a quien habla. */
+.chat-burbuja-bot {
+  background: var(--surface-1); color: var(--ink);
+  border-radius: 6px 18px 18px 18px;
+  border-left: 3px solid var(--accent);      /* la firma dorada */
+  box-shadow: 0 2px 10px rgba(16, 42, 58, .08);
+}
+.chat-burbuja-bot strong { color: var(--brand); font-weight: 600; }
+
+.chat-burbuja-yo {
+  background: var(--brand); color: var(--brand-ink);
+  border: 0; border-radius: 18px 18px 6px 18px;
+  box-shadow: 0 2px 10px rgba(1, 88, 122, .25);
+  font: inherit; font-size: 15px; cursor: pointer; text-align: left;
+  display: inline-flex; align-items: center; gap: 8px;
+  transition: filter .16s var(--ease);
+}
+.chat-burbuja-yo:disabled { cursor: default; }
+.chat-burbuja-yo:not(:disabled):hover { filter: brightness(1.08); }
+.chat-editar { width: 13px; height: 13px; opacity: .65; flex: none; }
+.chat-burbuja-yo:disabled .chat-editar { display: none; }
+
+.chat-nota {
+  display: block; margin-top: 7px;
+  font-size: 13px; color: var(--ink-3); line-height: 1.5;
+}
+
+/* Tres puntos mientras piensa */
+.chat-puntos { display: inline-flex; align-items: center; gap: 5px; padding: 15px 18px; }
+.chat-puntos span {
+  width: 7px; height: 7px; border-radius: 50%; background: var(--ink-3);
+  animation: chat-bote 1.2s infinite;
+}
+.chat-puntos span:nth-child(2) { animation-delay: .2s; }
+.chat-puntos span:nth-child(3) { animation-delay: .4s; }
+@keyframes chat-bote { 0%, 80%, 100% { transform: translateY(0); } 40% { transform: translateY(-7px); } }
+
+/* ── Zona de respuesta ──────────────────────────────────────────────────── */
+.chat-respuesta { display: grid; gap: 10px; }
+
+.chat-control { display: grid; gap: 10px; }
+.chat-control.chat-sacudir { animation: chat-sacude .42s; }
+@keyframes chat-sacude {
+  0%, 100% { transform: translateX(0); }
+  25% { transform: translateX(-6px); }
+  75% { transform: translateX(6px); }
+}
+
+.chat-error { font-size: 13.5px; font-weight: 500; color: var(--aviso); }
+
+/* Respuestas rápidas */
+.chat-opciones { display: grid; gap: 9px; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); }
+.chat-opciones-multi { display: flex; flex-wrap: wrap; }
+
+.chat-opcion {
+  display: flex; align-items: center; gap: 11px; text-align: left; cursor: pointer;
+  padding: 13px 15px; border-radius: var(--radio);
+  background: var(--surface-1); border: 1.5px solid var(--line); color: var(--ink);
+  transition: border-color .18s var(--ease), transform .18s var(--ease), box-shadow .18s var(--ease);
+}
+.chat-opcion:hover {
+  border-color: var(--secundario); transform: translateY(-2px);
+  box-shadow: 0 6px 18px rgba(30, 41, 59, .1);
+}
+.chat-opcion:focus-visible { outline: 2px solid var(--brand); outline-offset: 2px; }
+.chat-opcion-icono {
+  width: 36px; height: 36px; flex: none; border-radius: 10px; display: grid; place-items: center;
+  background: color-mix(in srgb, var(--brand) 10%, var(--surface-1)); color: var(--brand);
+}
+.chat-opcion-icono svg { width: 19px; height: 19px; }
+.chat-opcion-texto { display: grid; gap: 1px; min-width: 0; }
+.chat-opcion-texto b { font-size: 14.5px; font-weight: 600; }
+.chat-opcion-texto small { font-size: 12.5px; color: var(--ink-3); }
+
+/* Chips de selección múltiple */
+.chat-opcion-chip {
+  padding: 9px 15px; border-radius: 99px; gap: 7px;
+  font-size: 13.5px; font-weight: 500; color: var(--ink-2);
+}
+.chat-opcion-chip svg { width: 15px; height: 15px; }
+.chat-opcion-chip.activa {
+  background: color-mix(in srgb, var(--brand) 12%, var(--surface-1));
+  border-color: var(--brand); color: var(--brand); font-weight: 600;
+}
+.chat-seguir { justify-self: start; }
+
+/* Campo de escritura */
+.chat-fila { display: flex; gap: 9px; align-items: flex-end; }
+.chat-fila-rango { flex-wrap: wrap; }
+.chat-fila-rango .chat-campo { flex: 1 1 130px; }
+
+.chat-campo {
+  flex: 1; min-width: 0;
+  padding: 13px 17px; font-size: 15px; line-height: 1.5;
+  background: var(--surface-1); color: var(--ink);
+  border: 1.5px solid var(--line); border-radius: var(--radio-pill);
+  transition: border-color .18s var(--ease), box-shadow .18s var(--ease);
+  resize: vertical;
+}
+.chat-campo::placeholder { color: var(--ink-3); }
+.chat-campo:focus { outline: none; border-color: var(--secundario); box-shadow: var(--halo); }
+.chat-campo[aria-invalid="true"] { border-color: var(--aviso); }
+
+/* Botón de enviar: dorado, el acento de las llamadas a la acción */
+.chat-enviar {
+  width: 46px; height: 46px; flex: none; border: 0; border-radius: 50%; cursor: pointer;
+  background: var(--accent); color: var(--accent-ink);
+  display: grid; place-items: center;
+  box-shadow: 0 1px 3px rgba(231, 186, 17, .3), 0 4px 12px rgba(231, 186, 17, .38);
+  transition: transform .18s var(--ease), box-shadow .18s var(--ease);
+}
+.chat-enviar svg { width: 19px; height: 19px; }
+.chat-enviar:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 2px 5px rgba(231, 186, 17, .32), 0 8px 20px rgba(231, 186, 17, .45);
+}
+
+.chat-sugerencias { display: flex; flex-wrap: wrap; gap: 6px; }
+.chat-sugerencia {
+  padding: 6px 12px; border-radius: 99px; cursor: pointer;
+  background: var(--surface-2); border: 0; color: var(--ink-2);
+  font-size: 12.5px;
+}
+.chat-sugerencia:hover { background: var(--surface-3); color: var(--ink); }
+
+.chat-geo, .chat-archivo { justify-self: start; }
+.chat-geo svg, .chat-archivo svg { width: 16px; height: 16px; }
+.chat-omitir { justify-self: start; }
+
+@media (max-width: 560px) {
+  .chat-hilo { max-height: none; }
+  .chat-burbuja { max-width: 90%; font-size: 14.5px; }
+  .chat-opciones { grid-template-columns: 1fr; }
+}
+
+/* Las dos salidas de un paso opcional: omitir esta pregunta, o terminar ya.
+   Van juntas y se distinguen por peso visual, no por el texto. */
+.chat-salidas { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; }
+.chat-omitir-todo svg { width: 14px; height: 14px; }
+
+/* ── Respuesta prellenada desde el perfil (panel del paciente) ────────────
+   Se distingue de una respuesta dada: borde punteado y un "Cambiar" visible.
+   La persona tiene que notar que esa burbuja no la escribió ella. */
+.chat-burbuja-prefijada { border: 1.5px dashed rgba(255, 255, 255, .6); }
+.chat-cambiar { font-size: 12px; font-weight: 600; text-decoration: underline; opacity: .9; white-space: nowrap; }
+
+/* ── Aire ─────────────────────────────────────────────────────────────────
+   Las opciones con texto de apoyo necesitan ancho para leerse de un vistazo:
+   tres columnas apretadas se leen peor que dos holgadas. */
+.chat-hilo { gap: 14px; }
+.chat-opciones { gap: 10px; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); }
+.chat-opcion { padding: 14px 16px; }
+.chat-opcion-texto { line-height: 1.4; }
+.chat-control { margin-top: 4px; }

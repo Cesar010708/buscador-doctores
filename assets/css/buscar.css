@@ -1,0 +1,239 @@
+/* ==========================================================================
+   Buscador de Doctores — pantalla del paciente (wizard + resultados)
+   ========================================================================== */
+
+.portada { padding: 40px 0 26px; }
+.portada h1 { font-size: clamp(1.7rem, 4vw, 2.3rem); }
+.portada p  { margin-top: 10px; color: var(--ink-2); max-width: 62ch; }
+
+/* ── Resultados ───────────────────────────────────────────────────────── */
+.resultados { padding: 26px 0 20px; }
+
+.resumen-busqueda {
+  display: flex; flex-wrap: wrap; align-items: center; gap: 12px;
+  margin-bottom: 22px;
+}
+.resumen-busqueda h2 { font-size: 1.3rem; }
+.resumen-busqueda .crece { flex: 1; }
+.resumen-detalle { color: var(--ink-2); font-size: 13.5px; margin-top: 3px; }
+
+/* Tarjetas de arquetipo */
+.arquetipos {
+  display: grid; gap: 14px; margin-bottom: 30px;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+}
+.arquetipo { padding: 18px; display: grid; gap: 11px; align-content: start; }
+.arquetipo-cabeza { display: flex; align-items: center; gap: 8px; }
+.arquetipo-icono {
+  width: 30px; height: 30px; border-radius: 9px; display: grid; place-items: center;
+  background: var(--surface-2); color: var(--ink-2);
+}
+.arquetipo-icono svg { width: 17px; height: 17px; }
+.arquetipo-etiqueta { font-size: 11.5px; font-weight: 700; letter-spacing: .04em; text-transform: uppercase; color: var(--ink-3); }
+.arquetipo--destacado { border-color: var(--brand); box-shadow: var(--sombra-alta); }
+.arquetipo--destacado .arquetipo-icono { background: var(--brand); color: var(--brand-ink); }
+.arquetipo--destacado .arquetipo-etiqueta { color: var(--brand); }
+.arquetipo-nombre { font-size: 1.02rem; font-weight: 600; }
+.arquetipo-esp { font-size: 13px; color: var(--ink-3); margin-top: 1px; }
+.arquetipo-porque { font-size: 13.5px; color: var(--ink-2); line-height: 1.5; }
+.arquetipo-tambien { font-size: 12.5px; color: var(--ink-3); }
+.arquetipo-pie { display: flex; align-items: center; gap: 8px; margin-top: 2px; }
+.arquetipo-pie .crece { flex: 1; }
+
+/* Comparador */
+.comparador { margin-bottom: 30px; }
+.comparador-cabeza {
+  display: flex; align-items: center; gap: 10px; padding: 15px 18px;
+  border-bottom: 1px solid var(--line);
+}
+.comparador-cabeza h3 { flex: 1; }
+.comparador-cabeza > svg { width: 20px; height: 20px; color: var(--ink-3); }
+.tabla-envoltura { overflow-x: auto; }
+.tabla { width: 100%; border-collapse: collapse; font-size: 13.5px; }
+.tabla th, .tabla td { padding: 11px 14px; text-align: left; border-bottom: 1px solid var(--line); vertical-align: top; }
+.tabla thead th { font-size: 12px; font-weight: 600; color: var(--ink-3); background: var(--surface-2); white-space: nowrap; }
+.tabla tbody th { font-weight: 500; color: var(--ink-2); white-space: nowrap; }
+.tabla td { font-variant-numeric: tabular-nums; }
+.tabla tr:last-child th, .tabla tr:last-child td { border-bottom: 0; }
+
+/* Lista rankeada */
+.lista-titulo { margin: 0 0 14px; display: flex; align-items: center; gap: 10px; }
+.lista-titulo .crece { flex: 1; }
+.lista { display: grid; gap: 14px; }
+
+.doctor { padding: 18px; display: grid; gap: 14px; }
+.doctor-cabeza { display: flex; gap: 14px; align-items: flex-start; }
+.doctor-posicion {
+  width: 30px; height: 30px; border-radius: 9px; flex: none;
+  display: grid; place-items: center;
+  background: var(--surface-2); color: var(--ink-2);
+  font-size: 13px; font-weight: 700; font-variant-numeric: tabular-nums;
+}
+.doctor-identidad { flex: 1; min-width: 0; }
+.doctor-nombre { font-size: 1.02rem; font-weight: 600; overflow-wrap: anywhere; }
+.doctor-esp { font-size: 13px; color: var(--ink-3); overflow-wrap: anywhere; }
+.doctor-score { text-align: right; flex: none; }
+.doctor-score b { display: block; font-size: 1.35rem; font-weight: 700; line-height: 1.1; font-variant-numeric: tabular-nums; }
+.doctor-score span { font-size: 11px; color: var(--ink-3); text-transform: uppercase; letter-spacing: .04em; }
+
+.doctor-porque { font-size: 13.5px; color: var(--ink-2); line-height: 1.5; }
+.doctor-cuerpo { display: grid; gap: 16px; grid-template-columns: 1fr; }
+@media (min-width: 760px) { .doctor-cuerpo { grid-template-columns: 1.05fr 1fr; } }
+.doctor-pie { display: flex; align-items: center; gap: 9px; flex-wrap: wrap; }
+.doctor-pie .crece { flex: 1; }
+
+.bloque-ejes-titulo {
+  display: flex; align-items: baseline; gap: 8px; margin-bottom: 9px;
+  font-size: 11.5px; font-weight: 700; letter-spacing: .04em; text-transform: uppercase; color: var(--ink-3);
+}
+
+.texto-sec { font-size: 13.5px; color: var(--ink-2); line-height: 1.5; margin-top: 10px; }
+
+.detalle-ejes { margin-top: 4px; }
+.detalle-ejes summary { cursor: pointer; font-size: 12.5px; color: var(--ink-3); }
+.detalle-ejes summary::marker { color: var(--ink-3); }
+
+/* Estados vacíos */
+.vacio { padding: 34px 26px; text-align: center; display: grid; gap: 14px; justify-items: center; }
+.vacio-icono { width: 46px; height: 46px; border-radius: 14px; background: var(--surface-2); color: var(--ink-3); display: grid; place-items: center; }
+.vacio-icono svg { width: 24px; height: 24px; }
+.vacio h3 { font-size: 1.1rem; }
+.vacio p { color: var(--ink-2); font-size: 14px; max-width: 56ch; }
+
+/* Cargando */
+.cargando { display: grid; gap: 14px; justify-items: center; padding: 46px 0; color: var(--ink-2); }
+.cargando svg { width: 26px; height: 26px; color: var(--brand); }
+
+/* Aviso legal fijo abajo de resultados */
+.nota-legal { margin-top: 26px; }
+
+/* Mientras se reordena por un ajuste, la lista se atenúa en vez de parpadear. */
+.actualizando { opacity: .55; transition: opacity .15s var(--ease); pointer-events: none; }
+
+/* ══ Retoques con avatar ═══════════════════════════════════════════════ */
+.arquetipo-persona { display: flex; align-items: center; gap: 11px; }
+.arquetipo-persona > div { min-width: 0; }
+.doctor-cabeza .avatar { margin-top: 1px; }
+
+/* El eje que el paciente pidió se marca: es la prueba de que se le escuchó. */
+.eje--pedido .eje-nombre { color: var(--ink); font-weight: 600; }
+.eje--pedido .eje-barra  { box-shadow: 0 0 0 1px color-mix(in srgb, var(--brand) 45%, transparent); }
+.eje-marca { width: 12px; height: 12px; color: var(--brand); margin-left: 5px; vertical-align: -1px; }
+
+/* ══ La recomendación principal ═════════════════════════════════════════
+   Lo primero que se ve es un médico, no una tabla de puntajes. */
+.destacada {
+  padding: 0; overflow: hidden; margin-bottom: 18px;
+  border-color: var(--brand);
+  box-shadow: var(--sombra-alta);
+}
+.destacada-sello {
+  display: flex; align-items: center; gap: 8px;
+  padding: 11px 20px;
+  background: var(--grad); color: #fff;
+  font-size: 12px; font-weight: 700; letter-spacing: .06em; text-transform: uppercase;
+}
+.destacada-sello svg { width: 16px; height: 16px; }
+.destacada-cuerpo { display: flex; gap: 16px; padding: 20px; align-items: flex-start; }
+.destacada-datos { min-width: 0; display: grid; gap: 5px; }
+.destacada-nombre { font-size: 1.3rem; font-weight: 600; letter-spacing: -.01em; }
+.destacada-esp { font-size: 13.5px; color: var(--ink-3); }
+.destacada-porque { font-size: 15px; color: var(--ink-2); line-height: 1.55; margin: 6px 0 4px; }
+.destacada-pie { display: flex; align-items: center; padding: 0 20px 20px; }
+@media (max-width: 560px) {
+  .destacada-cuerpo { flex-direction: column; gap: 12px; }
+}
+
+/* ══ Por qué te conviene uno más que otro ═══════════════════════════════ */
+.comparativa-narrada {
+  display: flex; gap: 14px; align-items: flex-start;
+  padding: 17px 20px; margin-bottom: 22px;
+  background: color-mix(in srgb, var(--secundario) 8%, var(--surface-1));
+  border-color: color-mix(in srgb, var(--secundario) 35%, transparent);
+}
+.comparativa-icono {
+  width: 36px; height: 36px; flex: none; border-radius: 10px; display: grid; place-items: center;
+  background: var(--surface-1); color: var(--brand); border: 1px solid var(--line);
+}
+.comparativa-icono svg { width: 19px; height: 19px; }
+.comparativa-titulo {
+  font-size: 11.5px; font-weight: 700; letter-spacing: .05em; text-transform: uppercase;
+  color: var(--ink-3); margin-bottom: 5px;
+}
+.comparativa-narrada p { font-size: 14.5px; color: var(--ink); line-height: 1.55; }
+
+/* ══ Tarjeta de médico, sin maquinaria a la vista ═══════════════════════ */
+.doctor { padding: 18px; display: grid; gap: 12px; }
+.doctor-cabeza { display: flex; gap: 13px; align-items: flex-start; }
+.doctor-identidad { flex: 1; min-width: 0; display: grid; gap: 2px; }
+.doctor-etiqueta {
+  font-size: 11px; font-weight: 700; letter-spacing: .05em; text-transform: uppercase;
+  color: var(--brand);
+}
+.doctor-posicion {
+  width: 26px; height: 26px; border-radius: 8px; flex: none;
+  display: grid; place-items: center;
+  background: var(--surface-2); color: var(--ink-3);
+  font-size: 12px; font-weight: 700; font-variant-numeric: tabular-nums;
+}
+
+/* El desglose del ranking: disponible y auditable, pero plegado. */
+.detalle-ejes {
+  border-top: 1px solid var(--line); padding-top: 12px; margin-top: 2px;
+}
+.detalle-ejes summary {
+  cursor: pointer; font-size: 12.5px; font-weight: 500; color: var(--ink-3);
+  list-style: none; display: flex; align-items: center; gap: 6px;
+}
+.detalle-ejes summary::-webkit-details-marker { display: none; }
+.detalle-ejes summary::before {
+  content: ''; width: 0; height: 0; flex: none;
+  border-left: 5px solid currentColor; border-top: 4px solid transparent; border-bottom: 4px solid transparent;
+  transition: transform .18s var(--ease);
+}
+.detalle-ejes[open] summary::before { transform: rotate(90deg); }
+.detalle-ejes summary:hover { color: var(--ink); }
+.detalle-ejes .ejes { margin-top: 12px; }
+.detalle-pie { margin-top: 10px; font-size: 12px; color: var(--ink-3); }
+
+/* ══ Ajuste de orden, compacto ══════════════════════════════════════════ */
+.afinar { padding: 16px 18px; margin: 22px 0; display: grid; gap: 10px; }
+.afinar-titulo {
+  display: flex; align-items: center; gap: 8px;
+  font-size: 14px; font-weight: 600; color: var(--ink);
+}
+.afinar-titulo svg { width: 16px; height: 16px; color: var(--brand); }
+.afinar-nota { font-size: 12.5px; color: var(--ink-3); }
+.elegibles { display: flex; flex-wrap: wrap; gap: 7px; }
+.elegible {
+  display: inline-flex; align-items: center; gap: 6px;
+  padding: 7px 13px; border-radius: 99px; cursor: pointer;
+  background: var(--surface-2); border: 1px solid transparent; color: var(--ink-2);
+  font-size: 13px; font-weight: 500;
+  transition: background .16s var(--ease), color .16s var(--ease), border-color .16s var(--ease);
+}
+.elegible svg { width: 14px; height: 14px; }
+.elegible:hover { background: var(--surface-3); color: var(--ink); }
+.elegible.activa {
+  background: color-mix(in srgb, var(--brand) 13%, var(--surface-1));
+  border-color: var(--brand); color: var(--brand); font-weight: 600;
+}
+
+.actualizando { opacity: .55; transition: opacity .15s var(--ease); pointer-events: none; }
+
+.eje--pedido .eje-nombre { color: var(--ink); font-weight: 600; }
+.eje-marca { width: 12px; height: 12px; color: var(--brand); margin-left: 5px; vertical-align: -1px; }
+
+/* ── Contacto: sustituye al botón "Ver contacto" dentro de la misma tarjeta ── */
+.contacto {
+  display: grid; gap: 10px;
+  margin-top: 12px; padding-top: 12px; border-top: 1px solid var(--line);
+  font-size: 14px; color: var(--ink-2);
+}
+.destacada .contacto { margin: 0 20px 20px; }
+.contacto-fila { display: flex; align-items: flex-start; gap: 9px; line-height: 1.5; }
+.contacto-fila svg { width: 16px; height: 16px; flex: none; color: var(--brand); margin-top: 3px; }
+.contacto-fila a { color: var(--brand); font-weight: 600; text-decoration: none; }
+.contacto-fila a:hover { text-decoration: underline; }
+.contacto-falta { color: var(--ink-3); font-style: italic; }
+.contacto-nota { margin: 0; font-size: 12px; color: var(--ink-3); line-height: 1.5; }

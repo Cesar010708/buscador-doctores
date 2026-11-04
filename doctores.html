@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="es-MX">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="icon" href="favicon.png" type="image/png">
+<meta name="robots" content="noindex, nofollow">
+<title>Para médicos · Buscador de doctores</title>
+<meta name="description" content="Prototipo: alta de médicos en el buscador. Datos de prueba.">
+<link rel="stylesheet" href="assets/css/app.css">
+<link rel="stylesheet" href="assets/css/chat.css">
+<link rel="stylesheet" href="assets/css/doctor.css">
+</head>
+<body>
+
+<script src="assets/js/iconos.js"></script>
+
+<header class="cabecera">
+  <div class="contenedor cabecera-fila">
+    <a class="marca" href="buscar.html">
+      <img class="marca-logo" src="assets/img/logo-horizontal.webp" alt="Directorio médico" width="181" height="30">
+      <span class="marca-sep"></span>
+      <span class="marca-nombre">Buscador de doctores</span>
+    </a>
+    <span class="etiqueta-prueba"><svg><use href="#i-alerta"/></svg> Datos de prueba</span>
+    <span class="cabecera-espacio"></span>
+    <nav class="cabecera-nav">
+      <button class="btn btn-texto btn-chico" id="btn-tema" type="button" aria-label="Cambiar tema">
+        <svg><use href="#i-luna"/></svg>
+      </button>
+      <a class="btn btn-texto btn-chico" href="buscar.html">Soy paciente</a>
+      <button class="btn btn-linea btn-chico" type="button" id="btn-entrar">Ya tengo cuenta</button>
+    </nav>
+  </div>
+</header>
+
+<main class="contenedor">
+
+  <!-- ══ Propuesta de valor ═══════════════════════════════════════════ -->
+  <section class="heroe" id="vista-landing">
+    <div>
+      <h1>Aparece frente a pacientes que buscan justo lo que ofreces</h1>
+      <p class="heroe-entrada">Cuando alguien busca tu especialidad en tu zona, el sistema le explica por qué te recomienda. Crear tu cuenta toma un minuto; el perfil lo completas después, a tu ritmo.</p>
+
+      <div class="ventajas">
+        <div class="ventaja">
+          <span class="ventaja-icono"><svg><use href="#i-rayo"/></svg></span>
+          <div>
+            <b>Alta en un minuto</b>
+            <span>Nombre, correo, contraseña y tu cédula. Nada más para tener cuenta.</span>
+          </div>
+        </div>
+        <div class="ventaja">
+          <span class="ventaja-icono"><svg><use href="#i-persona"/></svg></span>
+          <div>
+            <b>Tú controlas tu información</b>
+            <span>Tus precios, tus horarios y tus servicios los editas tú, cuando quieras.</span>
+          </div>
+        </div>
+        <div class="ventaja">
+          <span class="ventaja-icono"><svg><use href="#i-balanza"/></svg></span>
+          <div>
+            <b>Recomendaciones que se explican</b>
+            <span>El orden sale de reglas fijas y públicas, no de quién paga más. Aquí no se compran posiciones.</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="heroe-acciones">
+        <button class="btn btn-acento btn-grande" type="button" id="btn-empezar">
+          <svg><use href="#i-globos"/></svg> Crear mi cuenta gratis
+        </button>
+        <span class="heroe-tiempo">Cuatro datos, un minuto</span>
+      </div>
+
+      <!-- Prueba social: solo aparece si la bitácora tiene datos reales -->
+      <div class="tarjeta demanda oculto" id="demanda">
+        <div class="demanda-titulo">Lo que buscaron los pacientes esta semana</div>
+        <div class="demanda-lista" id="demanda-especialidades"></div>
+        <div class="demanda-lista" id="demanda-zonas" style="margin-top:8px"></div>
+        <p class="demanda-pie">Conteos reales de las búsquedas hechas en este prototipo en los últimos 7 días.</p>
+      </div>
+    </div>
+
+    <div class="heroe-imagen">
+      <img src="assets/img/hero-consultorio.svg" alt="" width="400" height="320" loading="lazy">
+    </div>
+  </section>
+
+  <!-- ══ El alta, conversando ═════════════════════════════════════════ -->
+  <section id="vista-chat" class="chat-marco oculto">
+    <div class="chat-intro">
+      <h1>Creemos tu cuenta</h1>
+      <p>Cuatro datos y estás dentro. El perfil completo lo llenas después, en un formulario.</p>
+    </div>
+    <div id="chat"></div>
+  </section>
+
+  <!-- ══ Cierre: cómo quedó ═══════════════════════════════════════════ -->
+  <section id="vista-cierre" class="oculto"></section>
+
+  <!-- ══ Acceso ═══════════════════════════════════════════════════════ -->
+  <section id="vista-login" class="oculto">
+    <div class="tarjeta acceso acceso-solo">
+      <h2>Entra a tu perfil</h2>
+      <form class="formulario" id="form-login" novalidate>
+        <div class="campo">
+          <label class="campo-etiqueta" for="log-email">Correo</label>
+          <input class="entrada" id="log-email" type="email" maxlength="160" autocomplete="email" required>
+        </div>
+        <div class="campo">
+          <label class="campo-etiqueta" for="log-password">Contraseña</label>
+          <input class="entrada" id="log-password" type="password" autocomplete="current-password" required>
+        </div>
+        <p class="campo-error oculto" id="error-login"></p>
+        <button class="btn btn-primario" type="submit" id="btn-login">Entrar</button>
+        <p class="form-pie">Cuentas de prueba: cualquier correo del catálogo con la contraseña <strong>demo1234</strong>.</p>
+      </form>
+      <button class="btn btn-texto btn-chico" type="button" id="btn-volver-landing">Volver</button>
+    </div>
+  </section>
+
+  <div class="aviso" id="aviso-etica">
+    <svg><use href="#i-info"/></svg>
+    <span><strong>Sobre el ranking:</strong> tener el perfil completo mejora la precisión con la que te emparejamos, y desempata; no empuja a un médico por encima de una mejor opción para quien busca. Los pacientes ven el desglose del puntaje, así que el criterio es público.</span>
+  </div>
+
+</main>
+
+<footer class="pie">
+  <div class="contenedor">
+    <p><strong>Prototipo con datos ficticios.</strong> Los perfiles cargados son de prueba y no corresponden a médicos reales.</p>
+    <p>Este directorio no da diagnósticos ni consejo médico.</p>
+  </div>
+</footer>
+
+<script src="assets/js/tema.js"></script>
+<script src="assets/js/avatar.js"></script>
+<script src="assets/js/conversacion.js"></script>
+<script src="assets/js/guion-doctor.js"></script>
+<script src="assets/js/doctores.js"></script>
+</body>
+</html>
